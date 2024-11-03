@@ -1,0 +1,90 @@
+package base
+
+import "farishadibrata.com/rapidmono/view/components"
+
+templ BaseLayout() {
+	if (ctx.Value("IsHTMXRequest") != nil) {
+		{ children... }
+	}
+	if (ctx.Value("IsHTMXRequest") == nil) {
+		<!DOCTYPE html>
+		<html>
+			<head>
+				<link rel="stylesheet" href="/static/index.css"/>
+				<script src="/static/index.js"></script>
+				<script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+			</head>
+			<body class="min-h-screen h-full flex "  hx-ext="preload">
+				{ children... }
+			</body>
+		</html>
+	}
+}
+
+templ GroupSidebarItem() {
+	<div class="flex flex-col items-center w-full mt-3 border-t border-gray-700">
+		{ children... }
+	</div>
+}
+
+templ SidebarItem(icon, link, caption string) {
+	<a class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href={ templ.URL(link) }  preload="mouseover">
+		if icon != "" {
+			@components.Icon(icon)
+		}
+		<span class="ml-2 text-sm font-medium">{ caption }</span>
+	</a>
+}
+
+templ SidebarItemParent(groupName, caption string) {
+	<label class="h-full w-full">
+		// <input class="peer/testcomment absolute scale-0" type="checkbox" />
+		<input class="peer/collapsible absolute scale-0" type="checkbox"/>
+		<span class="block max-h-12 max-w-xs overflow-hidden rounded-lg shadow-lg transition-all duration-300 peer-checked/collapsible:max-h-fit">
+			<span class="flex h-14 cursor-pointer items-center">
+				<span class="ml-2 text-sm font-medium grow">{ caption }</span>
+				@components.Icon("chevron-down")
+			</span>
+			{ children... }
+		</span>
+	</label>
+}
+
+templ AuthorizedLayout() {
+	if (ctx.Value("IsHTMXRequest") != nil) {
+		<div id="content" class="transition-all">
+			{ children... }
+		</div>
+	}
+	if (ctx.Value("IsHTMXRequest") == nil) {
+		@BaseLayout() {
+			<div class="flex" hx-ext="preload">
+				<div class="flex flex-col items-center w-40 h-full overflow-hidden text-gray-400 bg-gray-900">
+					<a class="flex items-center w-full px-3 mt-3" href="#">
+						@components.Icon("diamond-percent")
+						<span class="ml-2 text-sm font-bold">Your App</span>
+					</a>
+					<div class="w-full px-2 grow" hx-boost="true" hx-target="#content" hx-swap="outerHTML" >
+						@GroupSidebarItem() {
+							@SidebarItem("gauge", "/dashboard", "Dashboard")
+							@SidebarItem("bell", "/dashboard/notification", "Notifications")
+						}
+
+						@GroupSidebarItem() {
+							@SidebarItemParent("SystemManagementGroup", "System Management") {
+								@SidebarItem("", "/system-management/user-management", "User Management")
+								@SidebarItem("", "/system-management/site-settings", "Site Settings")
+							}
+						}
+					</div>
+					@GroupSidebarItem() {
+						@SidebarItem("Log-out", "/", "Logout")
+					}
+				</div>
+				<div id="content" class="transition-all">
+					{ children... }
+				</div>
+			</div>
+		}
+	}
+}

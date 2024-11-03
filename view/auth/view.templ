@@ -1,0 +1,136 @@
+package view
+
+import (
+	"farishadibrata.com/rapidmono/view/base"
+	"farishadibrata.com/rapidmono/view/components"
+)
+
+templ BaseLayoutAuth() {
+	if (ctx.Value("IsHTMXRequest") == nil) {
+		@base.BaseLayout() {
+			<div class="grid grid-cols-2 h-full w-full ">
+				@SideImage()
+				{ children... }
+			</div>
+		}
+	}
+	if (ctx.Value("IsHTMXRequest") != nil && ctx.Value("IsHTMXRequest") == true) {
+		{ children... }
+	}
+}
+
+templ SideImage() {
+	<div class="relative bg-cover bg-center ">
+		<script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+		<dotlottie-player src="https://lottie.host/54647fa3-4d76-48f0-a0c1-70fdc35dd394/SuB2NBtEB5.json" background="transparent" speed="1" style="height: 100vh" direction="1" playMode="bounce" loop autoplay></dotlottie-player>
+	</div>
+}
+
+templ GreetMessage() {
+	<h1 class="text-4xl font-bold">Rapidmono</h1>
+	<p class="mt-4 text-lg">Monolithic Web Application with HTMX and golang. </p>
+	<div id="err-msg"></div>
+}
+
+templ FormLogin(level, msg string) {
+	<form hx-post="/auth/login">
+		<div class="flex flex-col gap-4 mt-4 ">
+			if msg != "" {
+				@components.Alert(level) {
+					{ msg }
+				}
+			}
+			@components.InputWithIcon("mail", "Email", "email", "email", "email_input")
+			@components.InputWithIcon("lock", "Password", "password", "password", "password_input")
+			<button type="submit" class=" text-center text-white rounded bg-blue-700 py-2 shadow-md">Login </button>
+		</div>
+	</form>
+}
+
+templ Home() {
+	@BaseLayoutAuth() {
+		<div class="flex items-center justify-center bg-white " id="card-content">
+			@components.Card() {
+				<div class="text-center p-8">
+					@GreetMessage()
+					@FormLogin("", "")
+					<div class="mt-8">
+						<div class="flex" hx-swap="outerHTML" hx-target="#card-content" hx-boost="true">
+							<div class="grow text-left">
+								<a href="/auth/forgot-password" class="text-blue-600">Forgot Password</a>
+							</div>
+							<div class="grow text-right">
+								<a href="/auth/register" class="text-blue-600">Create Account</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	}
+}
+
+templ ForgotPassword() {
+	@BaseLayoutAuth() {
+		<div class="flex items-center justify-center bg-white " id="card-content">
+			@components.Card() {
+				<div class="text-center p-8">
+					@GreetMessage()
+					<div class="flex flex-col gap-4 mt-4 ">
+						@components.InputWithIcon("mail", "Email", "email", "email", "email_input")
+						<span class="text-sm">
+							Please input your email to reset password
+						</span>
+						<button class=" text-center text-white rounded bg-blue-700 py-2 shadow-md">Reset Password</button>
+					</div>
+					<div class="mt-8">
+						<div class="flex" hx-swap="outerHTML" hx-target="#card-content" hx-boost="true">
+							<div class="grow text-left">
+								<a href="/auth/login" class="text-blue-600">Have an account ? Login</a>
+							</div>
+							<div class="grow text-right">
+								<a href="/auth/register" class="text-blue-600">Create Account</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	}
+}
+
+templ FormRegister(level, msg string) {
+	<form hx-post="/auth/register">
+		<div class="flex flex-col gap-4 mt-4 ">
+			if msg != "" {
+				@components.Alert(level) {
+					{ msg }
+				}
+			}
+			@components.InputWithIcon("mail", "Email", "email", "email", "email_input")
+			@components.InputWithIcon("lock", "Password", "password", "password", "password_input")
+			@components.InputWithIcon("repeat", "Repeat Password", "repeat_password", "password", "repeat_password_input")
+			<button type="submit" class=" text-center text-white rounded bg-blue-700 py-2 shadow-md">Register </button>
+		</div>
+	</form>
+}
+
+templ Register() {
+	@BaseLayoutAuth() {
+		<div class="flex items-center justify-center bg-white " id="card-content">
+			@components.Card() {
+				<div class="text-center p-8">
+					@GreetMessage()
+					@FormRegister("", "")
+					<div class="mt-8">
+						<div class="flex">
+							<div class="grow text-left" hx-swap="outerHTML" hx-target="#card-content" hx-boost="true">
+								<a href="/auth/login" class="text-blue-600">Have an account ? Login</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	}
+}

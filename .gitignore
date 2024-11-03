@@ -1,0 +1,6 @@
+local-deps
+.env
+node_modules
+dist
+tmp
+*_templ.go

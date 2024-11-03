@@ -1,0 +1,11 @@
+package components
+
+templ InputWithIcon(icon string, placeholder string, name string, typeInput string, id string) {
+	<label for={ id } class="sr-only">{ placeholder }</label>
+	<div class="relative w-full">
+		<div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none text-slate-400">
+			<span data-lucide={ icon }></span>
+		</div>
+		<input type={ typeInput } id={ id } class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 " placeholder={ placeholder } name={ name }/>
+	</div>
+}

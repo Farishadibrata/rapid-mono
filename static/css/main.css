@@ -1,0 +1,18 @@
+/* @import 'animate.css'; */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+dotlottie-player {
+    transition: all 1s ease-in;
+}
+
+#content.htmx-added {
+    opacity: 0;
+}
+
+#content {
+    opacity: 1;
+    transition: opacity 0.24s ease-out;
+}
