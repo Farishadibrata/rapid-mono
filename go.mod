@@ -11,6 +11,7 @@ require (
 )
 
 require (
+	github.com/Blank-Xu/sqlx-adapter v0.0.0-20240923201953-115a935429dd // indirect
 	github.com/a-h/templ v0.2.793 // indirect
 	github.com/andybalholm/brotli v1.1.1 // indirect
 	github.com/bmatcuk/doublestar/v4 v4.6.1 // indirect

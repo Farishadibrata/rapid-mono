@@ -14,7 +14,7 @@ templ BaseLayout() {
 				<script src="/static/index.js"></script>
 				<script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
 			</head>
-			<body class="min-h-screen h-full flex "  hx-ext="preload">
+			<body class="min-h-screen h-full flex " hx-ext="preload">
 				{ children... }
 			</body>
 		</html>
@@ -28,7 +28,7 @@ templ GroupSidebarItem() {
 }
 
 templ SidebarItem(icon, link, caption string) {
-	<a class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href={ templ.URL(link) }  preload="mouseover">
+	<a class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href={ templ.URL(link) } preload="mouseover">
 		if icon != "" {
 			@components.Icon(icon)
 		}
@@ -56,6 +56,7 @@ templ AuthorizedLayout() {
 			{ children... }
 		</div>
 	}
+
 	if (ctx.Value("IsHTMXRequest") == nil) {
 		@BaseLayout() {
 			<div class="flex" hx-ext="preload">
@@ -64,15 +65,15 @@ templ AuthorizedLayout() {
 						@components.Icon("diamond-percent")
 						<span class="ml-2 text-sm font-bold">Your App</span>
 					</a>
-					<div class="w-full px-2 grow" hx-boost="true" hx-target="#content" hx-swap="outerHTML" >
+					<div class="w-full px-2 grow" hx-boost="true" hx-target="#content" hx-swap="outerHTML">
 						@GroupSidebarItem() {
 							@SidebarItem("gauge", "/dashboard", "Dashboard")
 							@SidebarItem("bell", "/dashboard/notification", "Notifications")
 						}
-
 						@GroupSidebarItem() {
 							@SidebarItemParent("SystemManagementGroup", "System Management") {
 								@SidebarItem("", "/system-management/user-management", "User Management")
+								@SidebarItem("", "/system-management/user-group-management", "User Group Management")
 								@SidebarItem("", "/system-management/site-settings", "Site Settings")
 							}
 						}

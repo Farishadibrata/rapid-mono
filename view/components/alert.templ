@@ -2,7 +2,7 @@ package components
 
 templ Alert(level string) {
 	<div
-		class={ "p-4 max-w-lg border rounded-2xl shadow-sm flex flex-col items-center", templ.KV("border-red-300 hover:shadow-red-50 text-red-600 " , level == "error"), templ.KV("border-green-300 hover:shadow-green-50 text-green-600 " , level == "success") }
+		class={ "~p-4 max-w-lg border ~rounded-2xl ~shadow-sm flex flex-col items-center", templ.KV("border-red-300 hover:shadow-red-50 text-red-600 " , level == "error"), templ.KV("border-green-300 hover:shadow-green-50 text-green-600 " , level == "success") }
 	>
 		{ children... }
 	</div>

@@ -1,6 +1,11 @@
+import fluid, { extract } from 'fluid-tailwind'
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./view/**/*.templ"],
+  content: {
+    files: ["./view/**/*.templ"],
+    extract
+  },
   theme: {
     extend: {
       colors: {
@@ -20,6 +25,6 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [fluid],
 }
 

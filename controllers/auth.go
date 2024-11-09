@@ -36,9 +36,9 @@ func (a *AuthController) New(appInstance *app.AppInstance) app.Controller {
 }
 
 func (app *AuthController) AuthMiddleware(ctx *fiber.Ctx) error {
-	if ctx.Cookies("session") != "" {
-		return ctx.Redirect("/dashboard/")
-	}
+	// if ctx.Cookies("session") != "" {
+	// 	return ctx.Redirect("/dashboard/")
+	// }
 	return ctx.Next()
 }
 
@@ -88,7 +88,9 @@ func (app *AuthController) PostLogin(ctx *fiber.Ctx) error {
 		Value: sessionId,
 	})
 
-	return app.Render(ctx, authView.FormLogin("success", "Will be redirected in few seconds..."))
+	ctx.Response().Header.Set("HX-Redirect", "/dashboard/")
+
+	return app.Render(ctx, authView.FormLogin("success", "Login success, please refresh the page if you're not redirected"))
 }
 
 func (app *AuthController) PostRegister(ctx *fiber.Ctx) error {
